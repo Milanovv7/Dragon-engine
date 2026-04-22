@@ -99,6 +99,7 @@
             align-items: center;
             gap: 10px;
             padding: 5px 20px;
+            margin-bottom: 30px;
             transition: all 0.3s ease;
         }
 
@@ -149,96 +150,6 @@
 
         body.professional.dark .search-box input::placeholder {
             color: #9aa0a6;
-        }
-
-        .suggestions-container {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            margin-top: 8px;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            display: none;
-            z-index: 100;
-        }
-
-        .suggestions-container.active {
-            display: block;
-        }
-
-        body.professional.light .suggestions-container {
-            background: white;
-            border: 1px solid #dfe1e5;
-        }
-
-        body.professional.dark .suggestions-container {
-            background: #303134;
-            border: 1px solid #5f6368;
-        }
-
-        body.professional.dark.navy-theme .suggestions-container {
-            background: #1e2a3a;
-            border: 1px solid #2d3f54;
-        }
-
-        body.playful .suggestions-container {
-            background: white;
-        }
-
-        .suggestion-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: background 0.2s ease;
-        }
-
-        body.professional.light .suggestion-item:hover {
-            background: #f8f9fa;
-        }
-
-        body.professional.dark .suggestion-item:hover {
-            background: #3c4043;
-        }
-
-        body.professional.dark.navy-theme .suggestion-item:hover {
-            background: #2d3f54;
-        }
-
-        body.playful .suggestion-item:hover {
-            background: #f8f9fa;
-        }
-
-        .suggestion-item svg {
-            width: 18px;
-            height: 18px;
-            opacity: 0.5;
-            flex-shrink: 0;
-        }
-
-        body.professional.dark .suggestion-item svg {
-            stroke: #9aa0a6;
-        }
-
-        .suggestion-text {
-            flex: 1;
-            font-size: 14px;
-        }
-
-        body.professional.light .suggestion-text {
-            color: #202124;
-        }
-
-        body.professional.dark .suggestion-text {
-            color: #e8eaed;
-        }
-
-        .search-box-wrapper {
-            position: relative;
-            margin-bottom: 30px;
         }
 
         .search-icon {
@@ -663,16 +574,13 @@
             <span>D</span><span>r</span><span>a</span><span>g</span><span>o</span><span>n</span>
         </div>
         
-        <div class="search-box-wrapper">
-            <div class="search-box">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <input type="text" id="searchInput" placeholder="Search the web..." autocomplete="off" />
-                <button class="ai-search-btn" id="aiSearchBtn" onclick="performAISearch()">AI Search</button>
-            </div>
-            <div class="suggestions-container" id="suggestionsContainer"></div>
+        <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search the web..." />
+            <button class="ai-search-btn" id="aiSearchBtn" onclick="performAISearch()">AI Search</button>
         </div>
         
         <div class="buttons">
@@ -712,10 +620,6 @@
                 <input type="checkbox" id="navyTheme" checked>
                 <label for="navyTheme">Navy Blue (Dark Mode)</label>
             </div>
-            <div class="checkbox-option" onclick="toggleSuggestions()">
-                <input type="checkbox" id="suggestionsToggle" checked>
-                <label for="suggestionsToggle">Search Suggestions</label>
-            </div>
         </div>
         <div class="settings-section">
             <h3>Style</h3>
@@ -741,13 +645,11 @@
         const aiSearchBtn = document.getElementById('aiSearchBtn');
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsPanel = document.getElementById('settingsPanel');
-        const suggestionsContainer = document.getElementById('suggestionsContainer');
         
         // Initialize settings from localStorage
         let currentColorMode = localStorage.getItem('colorMode') || 'system';
         let currentStyle = localStorage.getItem('style') || 'professional';
         let navyThemeEnabled = localStorage.getItem('navyTheme') !== 'false'; // Default true
-        let suggestionsEnabled = localStorage.getItem('suggestions') !== 'false'; // Default true
         
         function applyTheme() {
             const body = document.body;
@@ -773,7 +675,6 @@
             document.getElementById(`${currentColorMode}Mode`).checked = true;
             document.getElementById(`${currentStyle}Style`).checked = true;
             document.getElementById('navyTheme').checked = navyThemeEnabled;
-            document.getElementById('suggestionsToggle').checked = suggestionsEnabled;
         }
         
         function setColorMode(mode) {
@@ -793,15 +694,6 @@
             localStorage.setItem('navyTheme', navyThemeEnabled);
             document.getElementById('navyTheme').checked = navyThemeEnabled;
             applyTheme();
-        }
-        
-        function toggleSuggestions() {
-            suggestionsEnabled = !suggestionsEnabled;
-            localStorage.setItem('suggestions', suggestionsEnabled);
-            document.getElementById('suggestionsToggle').checked = suggestionsEnabled;
-            if (!suggestionsEnabled) {
-                hideSuggestions();
-            }
         }
         
         // Listen for system theme changes
@@ -829,102 +721,8 @@
         searchInput.addEventListener('input', () => {
             if (searchInput.value.trim()) {
                 aiSearchBtn.classList.add('hidden');
-                if (suggestionsEnabled) {
-                    fetchSuggestions(searchInput.value.trim());
-                }
             } else {
                 aiSearchBtn.classList.remove('hidden');
-                hideSuggestions();
-            }
-        });
-        
-        // Handle arrow key navigation and enter in suggestions
-        searchInput.addEventListener('keydown', (e) => {
-            const items = suggestionsContainer.querySelectorAll('.suggestion-item');
-            const activeItem = suggestionsContainer.querySelector('.suggestion-item.active');
-            let currentIndex = Array.from(items).indexOf(activeItem);
-            
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (currentIndex < items.length - 1) {
-                    if (activeItem) activeItem.classList.remove('active');
-                    items[currentIndex + 1].classList.add('active');
-                } else if (items.length > 0 && currentIndex === -1) {
-                    items[0].classList.add('active');
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (currentIndex > 0) {
-                    activeItem.classList.remove('active');
-                    items[currentIndex - 1].classList.add('active');
-                }
-            } else if (e.key === 'Enter') {
-                if (activeItem) {
-                    e.preventDefault();
-                    searchInput.value = activeItem.querySelector('.suggestion-text').textContent;
-                    hideSuggestions();
-                    performSearch();
-                }
-            } else if (e.key === 'Escape') {
-                hideSuggestions();
-            }
-        });
-        
-        let suggestionTimeout;
-        async function fetchSuggestions(query) {
-            clearTimeout(suggestionTimeout);
-            
-            if (!query || query.length < 1) {
-                hideSuggestions();
-                return;
-            }
-            
-            suggestionTimeout = setTimeout(async () => {
-                try {
-                    const response = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
-                    const data = await response.json();
-                    const suggestions = data[1];
-                    
-                    if (suggestions && suggestions.length > 0) {
-                        displaySuggestions(suggestions.slice(0, 8));
-                    } else {
-                        hideSuggestions();
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch suggestions:', error);
-                    hideSuggestions();
-                }
-            }, 150);
-        }
-        
-        function displaySuggestions(suggestions) {
-            suggestionsContainer.innerHTML = suggestions.map(suggestion => `
-                <div class="suggestion-item" onclick="selectSuggestion('${suggestion.replace(/'/g, "\\'")}')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                    <span class="suggestion-text">${suggestion}</span>
-                </div>
-            `).join('');
-            suggestionsContainer.classList.add('active');
-        }
-        
-        function hideSuggestions() {
-            suggestionsContainer.classList.remove('active');
-            suggestionsContainer.innerHTML = '';
-        }
-        
-        function selectSuggestion(suggestion) {
-            searchInput.value = suggestion;
-            hideSuggestions();
-            performSearch();
-        }
-        
-        // Close suggestions when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
-                hideSuggestions();
             }
         });
         
