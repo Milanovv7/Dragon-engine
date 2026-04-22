@@ -30,6 +30,10 @@
             background: #1a1a1a;
         }
 
+        body.professional.dark.navy-theme {
+            background: #0a1929;
+        }
+
         /* Playful Theme */
         body.playful {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -200,7 +204,7 @@
         }
 
         body.playful .ai-search-btn.initial-glow {
-            animation: initialGlowPlayful 1s ease-out;
+            animation: initialGlowPlayful 2s ease-out;
         }
 
         body.playful .ai-search-btn:hover {
@@ -256,6 +260,15 @@
             border: 1px solid #5f6368;
         }
 
+        body.professional.dark.navy-theme .btn {
+            background: #1e2a3a;
+            border: 1px solid #2d3f54;
+        }
+
+        body.professional.dark.navy-theme .btn:hover {
+            border: 1px solid #3d5570;
+        }
+
         /* Playful Buttons */
         body.playful .btn {
             background: rgba(255, 255, 255, 0.2);
@@ -296,6 +309,11 @@
             box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
         }
 
+        body.professional.dark.navy-theme .settings-btn {
+            background: #1e2a3a;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+        }
+
         body.playful .settings-btn {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -328,6 +346,64 @@
             fill: white;
         }
 
+        .extensions-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 80px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        body.professional.light .extensions-btn {
+            background: white;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        }
+
+        body.professional.dark .extensions-btn {
+            background: #303134;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        body.professional.dark.navy-theme .extensions-btn {
+            background: #1e2a3a;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        body.playful .extensions-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .extensions-btn:hover {
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .extensions-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        body.professional.light .extensions-btn svg {
+            fill: #5f6368;
+        }
+
+        body.professional.dark .extensions-btn svg {
+            fill: #e8eaed;
+        }
+
+        body.playful .extensions-btn svg {
+            fill: white;
+        }
+
         .settings-panel {
             position: fixed;
             bottom: 80px;
@@ -351,6 +427,10 @@
         body.professional.dark .settings-panel {
             background: #303134;
             color: #e8eaed;
+        }
+
+        body.professional.dark.navy-theme .settings-panel {
+            background: #1e2a3a;
         }
 
         body.playful .settings-panel {
@@ -406,6 +486,41 @@
         }
 
         .settings-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        body.professional.light .checkbox-option:hover {
+            background: #f8f9fa;
+        }
+
+        body.professional.dark .checkbox-option:hover {
+            background: #3c4043;
+        }
+
+        body.playful .checkbox-option:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-option label {
             cursor: pointer;
             flex: 1;
             font-size: 14px;
@@ -474,6 +589,12 @@
         </div>
     </div>
 
+    <button class="extensions-btn" onclick="window.open('https://chromewebstore.google.com/', '_blank')">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+        </svg>
+    </button>
+
     <button class="settings-btn" id="settingsBtn">
         <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97 0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1 0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66z"/>
@@ -494,6 +615,10 @@
             <div class="settings-option" onclick="setColorMode('system')">
                 <input type="radio" name="colorMode" id="systemMode" value="system" checked>
                 <label for="systemMode">System</label>
+            </div>
+            <div class="checkbox-option" onclick="toggleNavyTheme()">
+                <input type="checkbox" id="navyTheme" checked>
+                <label for="navyTheme">Navy Blue (Dark Mode)</label>
             </div>
         </div>
         <div class="settings-section">
@@ -524,6 +649,7 @@
         // Initialize settings from localStorage
         let currentColorMode = localStorage.getItem('colorMode') || 'system';
         let currentStyle = localStorage.getItem('style') || 'professional';
+        let navyThemeEnabled = localStorage.getItem('navyTheme') !== 'false'; // Default true
         
         function applyTheme() {
             const body = document.body;
@@ -540,9 +666,15 @@
                 body.classList.add(currentColorMode);
             }
             
+            // Apply navy theme if enabled and in professional dark mode
+            if (navyThemeEnabled && currentStyle === 'professional' && body.classList.contains('dark')) {
+                body.classList.add('navy-theme');
+            }
+            
             // Update radio buttons
             document.getElementById(`${currentColorMode}Mode`).checked = true;
             document.getElementById(`${currentStyle}Style`).checked = true;
+            document.getElementById('navyTheme').checked = navyThemeEnabled;
         }
         
         function setColorMode(mode) {
@@ -554,6 +686,13 @@
         function setStyle(style) {
             currentStyle = style;
             localStorage.setItem('style', style);
+            applyTheme();
+        }
+        
+        function toggleNavyTheme() {
+            navyThemeEnabled = !navyThemeEnabled;
+            localStorage.setItem('navyTheme', navyThemeEnabled);
+            document.getElementById('navyTheme').checked = navyThemeEnabled;
             applyTheme();
         }
         
@@ -592,7 +731,7 @@
             aiSearchBtn.classList.add('initial-glow');
             setTimeout(() => {
                 aiSearchBtn.classList.remove('initial-glow');
-            }, 1000);
+            }, 2000);
         });
         
         searchInput.addEventListener('keypress', (e) => {
