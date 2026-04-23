@@ -99,7 +99,6 @@
             align-items: center;
             gap: 10px;
             padding: 5px 20px;
-            margin-bottom: 30px;
             transition: all 0.3s ease;
         }
 
@@ -150,6 +149,11 @@
 
         body.professional.dark .search-box input::placeholder {
             color: #9aa0a6;
+        }
+
+        .search-box-wrapper {
+            position: relative;
+            margin-bottom: 30px;
         }
 
         .search-icon {
@@ -574,13 +578,15 @@
             <span>D</span><span>r</span><span>a</span><span>g</span><span>o</span><span>n</span>
         </div>
         
-        <div class="search-box">
-            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-            </svg>
-            <input type="text" id="searchInput" placeholder="Search the web..." />
-            <button class="ai-search-btn" id="aiSearchBtn" onclick="performAISearch()">AI Search</button>
+        <div class="search-box-wrapper">
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search or type a URL..." autocomplete="off" />
+                <button class="ai-search-btn" id="aiSearchBtn" onclick="performAISearch()">AI Search</button>
+            </div>
         </div>
         
         <div class="buttons">
@@ -620,6 +626,10 @@
                 <input type="checkbox" id="navyTheme" checked>
                 <label for="navyTheme">Navy Blue (Dark Mode)</label>
             </div>
+            <div class="checkbox-option" onclick="toggleNewTab()">
+                <input type="checkbox" id="newTabToggle">
+                <label for="newTabToggle">Open in New Tab</label>
+            </div>
         </div>
         <div class="settings-section">
             <h3>Style</h3>
@@ -650,6 +660,7 @@
         let currentColorMode = localStorage.getItem('colorMode') || 'system';
         let currentStyle = localStorage.getItem('style') || 'professional';
         let navyThemeEnabled = localStorage.getItem('navyTheme') !== 'false'; // Default true
+        let openInNewTab = localStorage.getItem('openInNewTab') === 'true'; // Default false
         
         function applyTheme() {
             const body = document.body;
@@ -675,6 +686,7 @@
             document.getElementById(`${currentColorMode}Mode`).checked = true;
             document.getElementById(`${currentStyle}Style`).checked = true;
             document.getElementById('navyTheme').checked = navyThemeEnabled;
+            document.getElementById('newTabToggle').checked = openInNewTab;
         }
         
         function setColorMode(mode) {
@@ -694,6 +706,56 @@
             localStorage.setItem('navyTheme', navyThemeEnabled);
             document.getElementById('navyTheme').checked = navyThemeEnabled;
             applyTheme();
+        }
+        
+        function toggleNewTab() {
+            openInNewTab = !openInNewTab;
+            localStorage.setItem('openInNewTab', openInNewTab);
+            document.getElementById('newTabToggle').checked = openInNewTab;
+        }
+        
+        function isURL(text) {
+            // Check if it's a URL
+            // If it starts with http:// or https://
+            if (text.startsWith('http://') || text.startsWith('https://')) {
+                return true;
+            }
+            
+            // Check for common URL patterns
+            // Must have at least one dot and no spaces
+            if (text.includes(' ')) {
+                return false;
+            }
+            
+            // Check if it looks like a domain (has a dot and valid TLD)
+            const parts = text.split('.');
+            if (parts.length >= 2) {
+                const lastPart = parts[parts.length - 1].toLowerCase();
+                // Common TLDs
+                const validTLDs = ['com', 'org', 'net', 'edu', 'gov', 'co', 'io', 'dev', 'app', 'ai', 'tv', 'me', 'us', 'uk', 'ca', 'de', 'fr', 'it', 'es', 'ru', 'cn', 'jp', 'au', 'br', 'in', 'mx', 'kr', 'nl', 'se', 'no', 'dk', 'fi', 'nz', 'za', 'sg', 'hk', 'tw', 'th', 'id', 'my', 'ph', 'vn', 'ae', 'sa', 'il', 'tr', 'pl', 'cz', 'ro', 'gr', 'pt', 'hu', 'ie', 'at', 'ch', 'be', 'info', 'biz', 'name', 'pro', 'mobi', 'tel', 'travel', 'xyz', 'online', 'site', 'tech', 'store', 'web', 'wiki', 'blog', 'cloud', 'live', 'today', 'news', 'world', 'space', 'link', 'click', 'life', 'shop', 'top', 'one', 'fun', 'video', 'music', 'art', 'design', 'photo', 'academy', 'center', 'zone', 'directory', 'gallery', 'media', 'network', 'studio', 'digital', 'social', 'email', 'systems', 'software', 'solutions', 'services', 'support', 'marketing', 'consulting', 'finance', 'legal', 'health', 'fitness', 'food', 'restaurant', 'cafe', 'bar', 'hotel', 'travel', 'tours', 'realestate', 'property', 'construction', 'engineering', 'technology', 'science', 'education', 'university', 'college', 'school', 'training', 'courses', 'expert', 'tips', 'guide', 'help', 'plus', 'works', 'company', 'group', 'team', 'partners', 'business', 'ventures'];
+                
+                return validTLDs.includes(lastPart);
+            }
+            
+            // Check for localhost or IP addresses
+            if (text === 'localhost' || text.startsWith('localhost:') || /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(text)) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        function navigate(url) {
+            // Add https:// if no protocol specified
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            
+            if (openInNewTab) {
+                window.open(url, '_blank');
+            } else {
+                window.location.href = url;
+            }
         }
         
         // Listen for system theme changes
@@ -721,8 +783,102 @@
         searchInput.addEventListener('input', () => {
             if (searchInput.value.trim()) {
                 aiSearchBtn.classList.add('hidden');
+                if (suggestionsEnabled) {
+                    fetchSuggestions(searchInput.value.trim());
+                }
             } else {
                 aiSearchBtn.classList.remove('hidden');
+                hideSuggestions();
+            }
+        });
+        
+        // Handle arrow key navigation and enter in suggestions
+        searchInput.addEventListener('keydown', (e) => {
+            const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+            const activeItem = suggestionsContainer.querySelector('.suggestion-item.active');
+            let currentIndex = Array.from(items).indexOf(activeItem);
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (currentIndex < items.length - 1) {
+                    if (activeItem) activeItem.classList.remove('active');
+                    items[currentIndex + 1].classList.add('active');
+                } else if (items.length > 0 && currentIndex === -1) {
+                    items[0].classList.add('active');
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    activeItem.classList.remove('active');
+                    items[currentIndex - 1].classList.add('active');
+                }
+            } else if (e.key === 'Enter') {
+                if (activeItem) {
+                    e.preventDefault();
+                    searchInput.value = activeItem.querySelector('.suggestion-text').textContent;
+                    hideSuggestions();
+                    performSearch();
+                }
+            } else if (e.key === 'Escape') {
+                hideSuggestions();
+            }
+        });
+        
+        let suggestionTimeout;
+        async function fetchSuggestions(query) {
+            clearTimeout(suggestionTimeout);
+            
+            if (!query || query.length < 1) {
+                hideSuggestions();
+                return;
+            }
+            
+            suggestionTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    const suggestions = data[1];
+                    
+                    if (suggestions && suggestions.length > 0) {
+                        displaySuggestions(suggestions.slice(0, 8));
+                    } else {
+                        hideSuggestions();
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch suggestions:', error);
+                    hideSuggestions();
+                }
+            }, 150);
+        }
+        
+        function displaySuggestions(suggestions) {
+            suggestionsContainer.innerHTML = suggestions.map(suggestion => `
+                <div class="suggestion-item" onclick="selectSuggestion('${suggestion.replace(/'/g, "\\'")}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <span class="suggestion-text">${suggestion}</span>
+                </div>
+            `).join('');
+            suggestionsContainer.classList.add('active');
+        }
+        
+        function hideSuggestions() {
+            suggestionsContainer.classList.remove('active');
+            suggestionsContainer.innerHTML = '';
+        }
+        
+        function selectSuggestion(suggestion) {
+            searchInput.value = suggestion;
+            hideSuggestions();
+            performSearch();
+        }
+        
+        // Close suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                hideSuggestions();
             }
         });
         
