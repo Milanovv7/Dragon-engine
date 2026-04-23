@@ -626,10 +626,6 @@
                 <input type="checkbox" id="navyTheme" checked>
                 <label for="navyTheme">Navy Blue (Dark Mode)</label>
             </div>
-            <div class="checkbox-option" onclick="toggleNewTab()">
-                <input type="checkbox" id="newTabToggle">
-                <label for="newTabToggle">Open in New Tab</label>
-            </div>
         </div>
         <div class="settings-section">
             <h3>Style</h3>
@@ -660,7 +656,6 @@
         let currentColorMode = localStorage.getItem('colorMode') || 'system';
         let currentStyle = localStorage.getItem('style') || 'professional';
         let navyThemeEnabled = localStorage.getItem('navyTheme') !== 'false'; // Default true
-        let openInNewTab = localStorage.getItem('openInNewTab') === 'true'; // Default false
         
         function applyTheme() {
             const body = document.body;
@@ -686,7 +681,6 @@
             document.getElementById(`${currentColorMode}Mode`).checked = true;
             document.getElementById(`${currentStyle}Style`).checked = true;
             document.getElementById('navyTheme').checked = navyThemeEnabled;
-            document.getElementById('newTabToggle').checked = openInNewTab;
         }
         
         function setColorMode(mode) {
@@ -706,12 +700,6 @@
             localStorage.setItem('navyTheme', navyThemeEnabled);
             document.getElementById('navyTheme').checked = navyThemeEnabled;
             applyTheme();
-        }
-        
-        function toggleNewTab() {
-            openInNewTab = !openInNewTab;
-            localStorage.setItem('openInNewTab', openInNewTab);
-            document.getElementById('newTabToggle').checked = openInNewTab;
         }
         
         function isURL(text) {
