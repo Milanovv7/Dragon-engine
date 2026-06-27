@@ -35,8 +35,12 @@
         }
 
         /* Playful Theme */
-        body.playful {
+        body.playful.light {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body.playful.dark {
+            background: linear-gradient(135deg, #1a1f3c 0%, #2d1b4e 100%);
         }
 
         .container {
@@ -124,13 +128,36 @@
         }
 
         /* Playful Search Box */
-        body.playful .search-box {
+        body.playful.light .search-box {
+            background: white;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
 
-        body.playful .search-box:hover {
+        body.playful.dark .search-box {
+            background: #111111;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        body.playful.light .search-box:hover {
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
             transform: translateY(-2px);
+        }
+
+        body.playful.dark .search-box:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        body.playful.dark .search-box input {
+            color: #e8eaed;
+        }
+
+        body.playful.dark .search-box input::placeholder {
+            color: #9aa0a6;
+        }
+
+        body.playful.dark .search-icon {
+            stroke: #9aa0a6;
         }
 
         .search-box input {
@@ -280,11 +307,21 @@
             backdrop-filter: blur(10px);
         }
 
+        body.playful.dark .btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
         body.playful .btn:hover {
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.playful.dark .btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .settings-btn {
@@ -322,6 +359,20 @@
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.playful.dark .settings-btn {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        body.playful .extensions-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.playful.dark .extensions-btn {
+            background: rgba(0, 0, 0, 0.4);
         }
 
         .settings-btn:hover svg {
@@ -417,11 +468,16 @@
             min-width: 250px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             z-index: 999;
-            display: none;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
         .settings-panel.active {
-            display: block;
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
         }
 
         body.professional.light .settings-panel {
@@ -440,6 +496,31 @@
         body.playful .settings-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+        }
+
+        body.playful.dark .settings-panel {
+            background: #111111;
+            color: #e8eaed;
+        }
+
+        body.playful.dark .settings-section h3 {
+            color: #e8eaed;
+        }
+
+        body.playful.dark .settings-option:hover {
+            background: #222222;
+        }
+
+        body.playful.dark .settings-option label {
+            color: #e8eaed;
+        }
+
+        body.playful.dark .checkbox-option:hover {
+            background: #222222;
+        }
+
+        body.playful.dark .checkbox-option label {
+            color: #e8eaed;
         }
 
         .settings-section {
