@@ -311,7 +311,7 @@
       </div>
       <div class="flex-1 min-w-0">
         <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Happy 1st Anniversary! 🎉</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Dragon Search is celebrating its 1st anniversary! Experience the special anniversary theme now.</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Dragon is celebrating its 1st anniversary! Experience the special anniversary theme now.</p>
         <div class="flex items-center gap-2">
           <button 
             onclick="acceptAnniversaryTheme()" 
@@ -653,6 +653,9 @@
         standardTitleEl.classList.add('hidden');
         anniversaryTitleEl.classList.remove('hidden');
 
+        // Change search input placeholder
+        searchInput.placeholder = "Goooooooooogle";
+
         // Purple Background Tint
         if (wallpaperTint) {
           wallpaperTint.style.background = 'radial-gradient(circle at 50% 20%, rgba(168, 85, 247, 0.35) 0%, rgba(126, 34, 206, 0.15) 50%, transparent 80%)';
@@ -689,6 +692,9 @@
         // Switch titles back
         standardTitleEl.classList.remove('hidden');
         anniversaryTitleEl.classList.add('hidden');
+
+        // Restore search input placeholder
+        searchInput.placeholder = "Search the web on Google...";
 
         // Restore accent wallpaper tint
         applyAccent(currentAccent);
